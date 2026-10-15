@@ -1,0 +1,15 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Si la peticion no es un archivo ni directorio existente, enviar a index.php
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^ index.php [QSA,L]
+</IfModule>
+
+# Ocultar la firma del servidor y proteger archivos dotfiles
+ServerSignature Off
+<FilesMatch "^\.">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
