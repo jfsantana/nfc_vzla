@@ -1,3 +1,8 @@
+Correo: superadmin@sistemanfc.com
+Contraseña: Admin123*
+
+
+
 ## Fase 1: Arquitectura Base y Entorno (Core Development)
 
 * **Configuración del Entorno:** Despliegue del entorno local con PHP 8.3.14 y el motor MySQL (InnoDB/utf8mb4).

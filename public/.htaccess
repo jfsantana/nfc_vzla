@@ -1,3 +1,6 @@
+Options -Indexes
+DirectoryIndex index.php
+
 <IfModule mod_rewrite.c>
     RewriteEngine On
 
@@ -10,6 +13,5 @@
 # Ocultar la firma del servidor y proteger archivos dotfiles
 ServerSignature Off
 <FilesMatch "^\.">
-    Order allow,deny
-    Deny from all
+    Require all denied
 </FilesMatch>
