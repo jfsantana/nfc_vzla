@@ -1,0 +1,38 @@
+## Fase 1: Arquitectura Base y Entorno (Core Development)
+
+* **Configuración del Entorno:** Despliegue del entorno local con PHP 8.3.14 y el motor MySQL (InnoDB/utf8mb4).
+* **Core MVC Custom:** Construcción del controlador frontal (`index.php`), el enrutador PSR-4 (Router) y los controladores/modelos base.
+* **Capa de Datos:** Implementación del patrón Singleton con PDO, asegurando conexiones persistentes y consultas preparadas estandarizadas.
+* **Aceleración de Código:** Configuración de GitHub Copilot Max en el entorno de desarrollo para automatizar la generación del *boilerplate* del framework y las estructuras de clases repetitivas.
+
+## Fase 2: Identidad, Roles y Seguridad Multi-Tenant
+
+* **Autenticación Base:** Sistema de inicio de sesión unificado empleando el algoritmo `password_hash()` nativo de PHP.
+* **Aislamiento B2B:** Implementación de *Middlewares* que inyecten obligatoriamente el `company_id` en la sesión, blindando las consultas SQL para evitar fugas de datos entre entidades.
+* **Control de Accesos (RBAC):** Restricción estricta de rutas basada en el `role_id` (SuperAdmin, CompanyAdmin, Employee).
+* **Seguridad Ofensiva:** Configuración de tokens CSRF en todos los formularios y filtrado estricto XSS en la entrada de datos.
+
+## Fase 3: Panel de Súper Administrador (El SaaS)
+
+* **Gestión de Catálogos:** Desarrollo de los módulos CRUD completos para `roles` y `plans` (niveles de membresía).
+* **Onboarding B2B:** Módulo de alta, baja y modificación de `companies`, asignación de planes y actualización del `status` (activa, suspendida por facturación).
+* **Identidad Corporativa Global:** Interfaz para la gestión centralizada de `logo_url`, colores corporativos primarios/secundarios y el `custom_css` de cada empresa.
+
+## Fase 4: Gestión B2B (Administrador de Empresa y Empleados)
+
+* **Inventario NFC:** CRUD operativo sobre la tabla `cards`, permitiendo vincular el `short_code` físico con un empleado (`user_id`) y un tipo de formato (`landing_type_id`).
+* **Editor de Perfiles B2B:** Interfaz aislada para actualizar la tabla `card_profiles` (nombres, cargos funcionales, biografías, y `avatar_url`).
+* **Gestión de Enlaces Dinámicos:** Módulo interactivo para alimentar la tabla `card_links` con control de orden (`position`) para los botones de WhatsApp, redes sociales o PDFs.
+* **Autonomía del Empleado:** Vista simplificada para que los usuarios con rol `employee` puedan modificar su propia tarjeta, su imagen de fondo individual (`cover_url`) y estilos específicos, sin acceso a la configuración corporativa.
+
+## Fase 5: Motor de Renderizado Público y Movilidad
+
+* **Enrutador Frontal Optimizado:** Script ligero en `/c/{short_code}` diseñado para ejecutar lecturas indexadas en MySQL y responder en fracciones de segundo tras el impacto NFC.
+* **Cascada de Estilos Inteligente:** Algoritmo de renderizado que hereda los colores de la tabla `companies`, pero prioriza y sobreescribe con el `custom_css` o `cover_url` específico del empleado en `card_profiles` si este existe.
+* **Motor de Conversión vCard (`.vcf`):** Endpoint dinámico que recibe el ID de la tarjeta, compila los campos de contacto y emite una cabecera `text/x-vcard` forzando la descarga para integración automática con la agenda nativa de iOS y Android.
+
+## Fase 6: Analíticas e Infraestructura
+
+* **Captura de Telemetría:** Registro asíncrono en la tabla `analytics` capturando fecha, IP y `user_agent` en cada escaneo físico.
+* **Integración de Reportes:** Estructuración de las vistas SQL para facilitar el consumo futuro desde herramientas de inteligencia de negocios como Power BI, proporcionando métricas de impacto a clientes corporativos como Adyar Industries.
+* **Despliegue y Distribución:** Configuración del servidor en producción, instalación de certificados SSL de máxima seguridad (requisito obligatorio para el comportamiento de etiquetas NFC en dispositivos móviles) y optimización de caché HTTP.

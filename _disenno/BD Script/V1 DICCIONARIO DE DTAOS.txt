@@ -1,0 +1,143 @@
+Aquí tienes un resumen completo y estructurado, ideal para la documentación técnica de tu sistema. Está basado exactamente en la estructura y relaciones definidas en el archivo SQL que adjuntaste.
+
+---
+
+# Documentación de Base de Datos: Sistema SaaS de Landing Pages NFC (`nfc_landing_db`)
+
+Esta base de datos relacional está diseñada bajo un modelo B2B SaaS (Software as a Service) multiempresa. Utiliza el motor `InnoDB` y codificación `utf8mb4` para soportar emojis y caracteres internacionales.
+
+La estructura se divide en tres bloques lógicos principales: **Administración B2B**, **Gestión de Tarjetas/Perfiles** y **Métricas**.
+
+## Bloque 1: Administración y Control de Acceso (B2B SaaS)
+
+### 1. Tabla: `plans` (Planes de Membresía)
+
+Gestiona los niveles de suscripción disponibles en la plataforma.
+
+* **Campos clave:** `name` (Nombre del plan), `max_cards` (Límite de tarjetas que permite el plan), `price` (Costo), `status` (active/inactive).
+
+
+* **Registros por defecto:** Emprendedor, Pyme, Corporativo.
+
+
+
+### 2. Tabla: `roles` (Roles del Sistema)
+
+Catálogo centralizado de los niveles de permisos para los usuarios.
+
+* **Campos clave:** `slug` (Identificador interno único), `name` (Nombre visible), `description`.
+
+
+* **Roles por defecto:** `superadmin` (Control total), `company_admin` (Admin de empresa), `hr_manager` (Gerente de RRHH), `employee` (Empleado base).
+
+
+
+### 3. Tabla: `companies` (Empresas/Clientes)
+
+Entidad central que agrupa a los usuarios, tarjetas y configuración global de cada cliente del SaaS.
+
+* **Campos clave:** `slug` (Identificador URL único), `subscription_ends_at` y `status` (Control de membresía y facturación).
+
+
+* **Personalización:** `logo_url`, `cover_url`, `primary_color`, `secondary_color`, `custom_css` (para inyectar estilos globales).
+
+
+* **Relaciones:** `plan_id` (Relacionado con `plans`, si se borra el plan queda en `NULL`).
+
+
+
+### 4. Tabla: `users` (Usuarios)
+
+Almacena las credenciales y accesos de todas las personas en el sistema, desde el Super Administrador hasta los empleados de cada empresa.
+
+* **Campos clave:** `email` (Único para login), `password` (Contraseña hasheada), `status`.
+
+
+* **Relaciones:**
+* `role_id`: Vinculado a `roles` (Eliminación restringida `ON DELETE RESTRICT` para evitar borrar roles en uso).
+
+
+* `company_id`: Vinculado a `companies` (Si la empresa se borra, sus usuarios se eliminan en cascada `ON DELETE CASCADE`).
+
+
+
+
+
+---
+
+## Bloque 2: Gestión de Tarjetas y Perfiles
+
+### 5. Tabla: `landing_types` (Tipos de Landing)
+
+Catálogo inmutable que define el propósito de la página a mostrar.
+
+* **Registros por defecto:** `Personal` (Perfil tipo vCard) y `Publicitaria` (Perfil institucional/producto).
+
+
+
+### 6. Tabla: `cards` (Tarjetas NFC Lógicas)
+
+Representa el chip físico de la tarjeta NFC. Es el núcleo de la redirección.
+
+* **Campos clave:** `short_code` (Código único grabado en la tarjeta para construir la URL pública).
+
+
+* **Relaciones:**
+* `company_id`: Empresa dueña de la tarjeta (`ON DELETE CASCADE`).
+
+
+* `landing_type_id`: Tipo de página asignada (`ON DELETE RESTRICT`).
+
+
+* `user_id`: Empleado al que se le entregó (Si el empleado es borrado de `users`, este campo queda libre `ON DELETE SET NULL` para poder reasignar la tarjeta).
+
+
+
+
+
+### 7. Tabla: `card_profiles` (Contenido de la Landing Page)
+
+Almacena la información principal (visual y de texto) que se renderiza al escanear una tarjeta. Es una relación 1 a 1 con la tarjeta.
+
+* **Campos clave:** `full_name`, `job_title`, `bio_description`.
+
+
+* **Personalización individual:** `avatar_url` (Foto), `cover_url` (Fondo propio), `custom_css` (Estilos que sobreescriben a los de la empresa).
+
+
+* **Relaciones:** `card_id` (Vinculada a la tarjeta, se elimina en cascada si se borra la tarjeta).
+
+
+
+### 8. Tabla: `card_links` (Botones de Acción Dinámicos)
+
+Almacena los múltiples enlaces que aparecen en el perfil (WhatsApp, Catálogos, Redes Sociales).
+
+* **Campos clave:**
+* `type`: ENUM que define la acción (whatsapp, phone, email, pdf_catalog, instagram, etc.).
+
+
+* `label` (Texto del botón) y `url_value` (El número de teléfono o enlace destino).
+
+
+* `position`: Entero para ordenar los botones mediante "Drag & Drop".
+
+
+
+
+* **Relaciones:** `card_id` (`ON DELETE CASCADE`).
+
+
+
+---
+
+## Bloque 3: Métricas y Monitoreo
+
+### 9. Tabla: `analytics` (Estadísticas de Escaneo)
+
+Registra cada evento de lectura de una tarjeta NFC para proporcionar métricas de rendimiento a las empresas.
+
+* **Campos clave:** `scanned_at` (Fecha y hora del escaneo), `user_agent` (Navegador y dispositivo), `ip_address` (Para geolocalización o conteo de escaneos únicos).
+
+
+* **Relaciones:** `card_id` (Se limpia en cascada `ON DELETE CASCADE` si la tarjeta es eliminada).

@@ -1,0 +1,9 @@
+# Ruta: .htaccess
+Options -Indexes
+
+<FilesMatch "^(?:\.env(?:\..*)?|composer\.(?:json|lock)|bootstrap\.php)$">
+    Require all denied
+</FilesMatch>
+
+RewriteEngine On
+RewriteRule ^(?:app|vendor|storage|tests)(?:/|$) - [F,L,NC]
