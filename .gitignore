@@ -32,3 +32,4 @@ Desktop.ini
 *.tmp
 *.bak
 app/Config/Database.php.htaccess
+app/Config/Database.php

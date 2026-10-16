@@ -79,7 +79,8 @@ final class HomeController extends BaseController
                 'notes'        => $message !== '' ? "Mensaje inicial desde el formulario de contacto:\n" . $message : null,
             ]);
 
-            // Enviar notificación por correo a venecode.contact@gmail.com
+            // 1. Enviar notificación por correo a venecode.contact@gmail.com
+            $recipient = (string)($_ENV['MAIL_CONTACT_RECIPIENT'] ?? self::CONTACT_RECIPIENT);
             $subject = "Nuevo Contacto de Cliente Potencial: {$companyName} ({$name})";
             $htmlBody = $this->buildContactEmailBody([
                 'id'           => $clientId,
@@ -91,9 +92,21 @@ final class HomeController extends BaseController
                 'date'         => date('d/m/Y H:i:s'),
             ]);
 
-            Mailer::send(self::CONTACT_RECIPIENT, $subject, $htmlBody, $email);
+            Mailer::send($recipient, $subject, $htmlBody, $email);
 
-            Session::flash('contact_success', '¡Gracias por contactarnos! Tu información fue registrada exitosamente. Nos pondremos en contacto contigo a la brevedad.');
+            // 2. Enviar correo de confirmación y agradecimiento al usuario
+            $userSubject = "Hemos recibido tu solicitud | Sistema NFC";
+            $userHtmlBody = $this->buildUserConfirmationEmailBody([
+                'name'         => $name,
+                'company_name' => $companyName,
+                'email'        => $email,
+                'phone'        => $phone,
+                'message'      => $message,
+            ]);
+
+            Mailer::send($email, $userSubject, $userHtmlBody, $recipient);
+
+            Session::flash('contact_success', '¡Gracias por contactarnos! Tu información fue registrada exitosamente y te hemos enviado un correo de confirmación. Nos pondremos en contacto contigo a la brevedad.');
         } catch (PDOException $e) {
             Session::flash('contact_error', 'Ocurrió un error al registrar tu contacto. Por favor inténtalo de nuevo.');
         } catch (\Throwable $e) {
@@ -162,6 +175,68 @@ final class HomeController extends BaseController
 
             <div style="margin-top: 24px; text-align: center;">
                 <p style="font-size: 12px; color: #94a3b8; margin: 0;">Este correo fue generado automáticamente por el Sistema SaaS de Tarjetas NFC.</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+HTML;
+    }
+
+    private function buildUserConfirmationEmailBody(array $data): string
+    {
+        $safeName = htmlspecialchars($data['name'], ENT_QUOTES, 'UTF-8');
+        $safeCompany = htmlspecialchars($data['company_name'], ENT_QUOTES, 'UTF-8');
+        $safePhone = htmlspecialchars($data['phone'], ENT_QUOTES, 'UTF-8');
+        $safeMessage = nl2br(htmlspecialchars($data['message'] !== '' ? $data['message'] : 'Solicitud general de información y cotización.', ENT_QUOTES, 'UTF-8'));
+
+        return <<<HTML
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Solicitud Recibida - Sistema NFC</title>
+</head>
+<body style="font-family: Arial, sans-serif; background-color: #f8fafc; color: #334155; margin: 0; padding: 20px;">
+    <div style="max-width: 600px; margin: 0 auto; background: #ffffff; border-radius: 14px; border: 1px solid #e2e8f0; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
+        <div style="background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%); padding: 28px; color: #ffffff; text-align: center;">
+            <h1 style="margin: 0 0 8px; font-size: 22px; font-weight: 800; letter-spacing: -0.02em;">¡Gracias por tu interés en el Sistema NFC!</h1>
+            <p style="margin: 0; font-size: 14px; opacity: 0.95;">Hemos recibido tu solicitud y la atenderemos lo antes posible</p>
+        </div>
+        <div style="padding: 28px;">
+            <p style="font-size: 15px; color: #1e293b; margin-top: 0;">Estimado(a) <strong>{$safeName}</strong>,</p>
+            <p style="font-size: 14px; color: #475569; line-height: 1.6;">
+                Te confirmamos que hemos recibido satisfactoriamente tu mensaje para la empresa <strong>{$safeCompany}</strong>. Agradecemos profundamente tu interés en nuestra plataforma de tarjetas de presentación inteligentes NFC y perfiles digitales corporativos.
+            </p>
+            <p style="font-size: 14px; color: #475569; line-height: 1.6;">
+                Nuestro equipo comercial y de consultoría tecnológica se pondrá en contacto contigo lo antes posible para atender tu solicitud, responder todas tus dudas y brindarte la mejor asesoría personalizada.
+            </p>
+
+            <div style="margin: 22px 0; padding: 18px; background: #f8fafc; border-radius: 10px; border: 1px solid #e2e8f0;">
+                <div style="font-size: 12px; font-weight: bold; text-transform: uppercase; color: #0891b2; letter-spacing: 0.05em; margin-bottom: 10px;">Resumen de tu Solicitud</div>
+                <table style="width: 100%; border-collapse: collapse; font-size: 13px; color: #334155;">
+                    <tr>
+                        <td style="padding: 5px 0; font-weight: 600; width: 140px; color: #64748b;">Empresa:</td>
+                        <td style="padding: 5px 0; font-weight: 700; color: #0f172a;">{$safeCompany}</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 5px 0; font-weight: 600; color: #64748b;">Teléfono de contacto:</td>
+                        <td style="padding: 5px 0;">{$safePhone}</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 5px 0; font-weight: 600; color: #64748b; vertical-align: top;">Requerimiento:</td>
+                        <td style="padding: 5px 0; line-height: 1.4;">{$safeMessage}</td>
+                    </tr>
+                </table>
+            </div>
+
+            <p style="font-size: 13px; color: #64748b; line-height: 1.5;">
+                Si requieres comunicarte con nosotros de manera directa, puedes responder a este correo o escribirnos a <a href="mailto:venecode.contact@gmail.com" style="color: #0891b2; font-weight: 600; text-decoration: none;">venecode.contact@gmail.com</a>.
+            </p>
+
+            <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #f1f5f9; text-align: center;">
+                <p style="font-size: 13px; font-weight: 700; color: #0f172a; margin: 0 0 4px;">Sistema NFC &bull; Tecnología de la mano de Venecode</p>
+                <p style="font-size: 12px; color: #94a3b8; margin: 0;">Plataforma SaaS B2B &bull; <a href="https://venecode.com" target="_blank" style="color: #0891b2; text-decoration: none;">venecode.com</a></p>
             </div>
         </div>
     </div>
