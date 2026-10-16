@@ -31,3 +31,4 @@ Desktop.ini
 .DS_Store
 *.tmp
 *.bak
+app/Config/Database.php
