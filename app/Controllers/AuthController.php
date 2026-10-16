@@ -21,7 +21,7 @@ final class AuthController extends BaseController
     {
         // Si ya está autenticado, redirigir al dashboard según el rol
         if (Session::has('user_id')) {
-            redirect('/admin/dashboard');
+            redirect(Session::get('role_slug') === 'superadmin' ? '/admin/dashboard' : '/company/dashboard');
             return;
         }
 
@@ -38,7 +38,8 @@ final class AuthController extends BaseController
     public function login(Request $request): void
     {
         $csrf = $request->post('_csrf');
-        if (!$csrf || $csrf !== Session::get('_csrf_token')) {
+        $sessionToken = (string)Session::get('_csrf_token', '');
+        if (!$csrf || $sessionToken === '' || !hash_equals($sessionToken, (string)$csrf)) {
             Session::flash('error', 'Token de seguridad inválido. Por favor recarga e intenta de nuevo.');
             redirect('/login');
             return;
@@ -69,6 +70,18 @@ final class AuthController extends BaseController
             return;
         }
 
+        if (!in_array($user['role_slug'], ['superadmin', 'company_admin'], true)) {
+            Session::flash('error', 'Este rol no tiene acceso al panel.');
+            redirect('/login');
+            return;
+        }
+
+        if ($user['role_slug'] === 'company_admin' && ($user['company_id'] === null || $user['company_status'] !== 'active')) {
+            Session::flash('error', 'La empresa asociada no está activa.');
+            redirect('/login');
+            return;
+        }
+
         // Iniciar sesión segura y regenerar ID de sesión
         session_regenerate_id(true);
         Session::set('user_id', $user['id']);
@@ -79,11 +92,19 @@ final class AuthController extends BaseController
         Session::set('company_id', $user['company_id']);
         Session::set('company_name', $user['company_name']);
 
-        redirect('/admin/dashboard');
+        redirect($user['role_slug'] === 'superadmin' ? '/admin/dashboard' : '/company/dashboard');
     }
 
     public function logout(Request $request): void
     {
+        $token = (string)$request->post('_csrf', '');
+        $sessionToken = (string)Session::get('_csrf_token', '');
+        if ($token === '' || $sessionToken === '' || !hash_equals($sessionToken, $token)) {
+            http_response_code(419);
+            echo 'La sesión del formulario venció. Recarga la página e inténtalo de nuevo.';
+            return;
+        }
+
         Session::destroy();
         redirect('/');
     }

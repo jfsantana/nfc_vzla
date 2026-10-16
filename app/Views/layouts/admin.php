@@ -76,14 +76,34 @@
             flex: 1;
             display: flex;
             flex-direction: column;
-            gap: 0.4rem;
+            gap: 0.35rem;
+            overflow-y: auto;
+        }
+
+        .sidebar-section-title {
+            padding: 1.25rem 0.75rem 0.35rem;
+            font-size: 0.72rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: #64748b;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .sidebar-section-title::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: #1e293b;
         }
 
         .nav-link-item {
             display: flex;
             align-items: center;
             gap: 0.85rem;
-            padding: 0.75rem 1rem;
+            padding: 0.7rem 1rem;
             border-radius: 10px;
             font-size: 0.92rem;
             font-weight: 600;
@@ -93,6 +113,23 @@
 
         .nav-link-item:hover, .nav-link-item.active {
             background-color: rgba(6, 182, 212, 0.12);
+            color: var(--primary);
+        }
+
+        .nav-sub-item {
+            padding: 0.45rem 0.85rem 0.45rem 2.35rem;
+            font-size: 0.83rem;
+            font-weight: 600;
+            color: #64748b;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 0.45rem;
+            transition: all 0.2s ease;
+        }
+
+        .nav-sub-item:hover, .nav-sub-item.active {
+            background-color: rgba(6, 182, 212, 0.08);
             color: var(--primary);
         }
 
@@ -163,8 +200,18 @@
             <span>NFC SaaS Admin</span>
         </div>
 
+        <?php
+            $currentUri = $_SERVER['REQUEST_URI'] ?? '';
+            $isCompanies = str_contains($currentUri, '/admin/companies') && !str_contains($currentUri, '/admin/companies/new');
+            $isCompanyCreate = str_contains($currentUri, '/admin/companies/new');
+            $isUsers = str_contains($currentUri, '/admin/users') && !str_contains($currentUri, '/admin/users/new');
+            $isUserCreate = str_contains($currentUri, '/admin/users/new');
+            $isSystemUsers = str_contains($currentUri, '/admin/system-users') && !str_contains($currentUri, '/admin/system-users/new');
+            $isSystemUserCreate = str_contains($currentUri, '/admin/system-users/new');
+        ?>
+
         <nav class="sidebar-nav">
-            <a href="<?= url('/admin/dashboard') ?>" class="nav-link-item active">
+            <a href="<?= url('/admin/dashboard') ?>" class="nav-link-item<?= str_contains($currentUri, '/admin/dashboard') ? ' active' : '' ?>">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <rect x="3" y="3" width="7" height="9"></rect>
                     <rect x="14" y="3" width="7" height="5"></rect>
@@ -173,32 +220,75 @@
                 </svg>
                 Dashboard
             </a>
-            <a href="#" class="nav-link-item">
+
+            <!-- SECCIÓN TENANT -->
+            <div class="sidebar-section-title">Tenant</div>
+
+            <a href="<?= url('/admin/companies') ?>" class="nav-link-item<?= $isCompanies ? ' active' : '' ?>">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
                 </svg>
-                Empresas (Tenants)
+                Empresas
             </a>
-            <a href="#" class="nav-link-item">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <rect x="2" y="5" width="20" height="14" rx="2"></rect>
-                    <line x1="2" y1="10" x2="22" y2="10"></line>
+            <a href="<?= url('/admin/companies/new') ?>" class="nav-sub-item<?= $isCompanyCreate ? ' active' : '' ?>">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
                 </svg>
-                Tarjetas NFC
+                + Crear Empresa
             </a>
-            <a href="#" class="nav-link-item">
+
+            <a href="<?= url('/admin/users') ?>" class="nav-link-item<?= $isUsers ? ' active' : '' ?>">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
                     <circle cx="9" cy="7" r="4"></circle>
+                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
                 </svg>
-                Usuarios Globales
+                Usuarios de Empresas
             </a>
+            <a href="<?= url('/admin/users/new') ?>" class="nav-sub-item<?= $isUserCreate ? ' active' : '' ?>">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                </svg>
+                + Crear Usuario Empresa
+            </a>
+
+            <!-- SECCIÓN ADMINISTRACIÓN -->
+            <div class="sidebar-section-title">Administración</div>
+
+            <a href="<?= url('/admin/system-users') ?>" class="nav-link-item<?= $isSystemUsers ? ' active' : '' ?>">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                </svg>
+                Usuarios del Sistema
+            </a>
+            <a href="<?= url('/admin/system-users/new') ?>" class="nav-sub-item<?= $isSystemUserCreate ? ' active' : '' ?>">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                </svg>
+                + Crear Administrador
+            </a>
+
             <a href="#" class="nav-link-item">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <line x1="12" y1="1" x2="12" y2="23"></line>
                     <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
                 </svg>
                 Planes & Facturación
+            </a>
+
+            <!-- INVENTARIO -->
+            <div class="sidebar-section-title">Inventario</div>
+            <a href="#" class="nav-link-item">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="2" y="5" width="20" height="14" rx="2"></rect>
+                    <line x1="2" y1="10" x2="22" y2="10"></line>
+                </svg>
+                Tarjetas NFC
             </a>
         </nav>
 
@@ -212,13 +302,16 @@
                     <div style="font-size: 0.75rem; color: #94a3b8;"><?= e($userEmail ?? '') ?></div>
                 </div>
             </div>
-            <a href="<?= url('/logout') ?>" title="Cerrar sesión" style="color: #ef4444; padding: 0.4rem;">
+            <form method="post" action="<?= url('/logout') ?>" style="margin:0;">
+                <?= csrf_field() ?>
+                <button type="submit" title="Cerrar sesión" style="color:#ef4444; padding:.4rem; border:0; background:transparent; cursor:pointer;">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
                     <polyline points="16 17 21 12 16 7"></polyline>
                     <line x1="21" y1="12" x2="9" y2="12"></line>
                 </svg>
-            </a>
+                </button>
+            </form>
         </div>
     </aside>
 

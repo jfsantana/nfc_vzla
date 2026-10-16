@@ -19,16 +19,7 @@ final class AdminController extends BaseController
 
     public function dashboard(Request $request): void
     {
-        if (!Session::has('user_id')) {
-            Session::flash('error', 'Debes iniciar sesión para acceder al panel.');
-            redirect('/login');
-            return;
-        }
-
-        $roleSlug = Session::get('role_slug');
-        if ($roleSlug !== 'superadmin') {
-            http_response_code(403);
-            echo "Acceso denegado: Se requiere rol Super Administrador.";
+        if (!$this->requireSuperAdmin()) {
             return;
         }
 
