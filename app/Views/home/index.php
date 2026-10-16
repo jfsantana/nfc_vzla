@@ -381,12 +381,295 @@
         margin: 0 auto 2rem;
     }
 
+    /* CONTACT SECTION */
+    .contact-section {
+        padding: 5rem 0;
+        background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+        border-top: 1px solid var(--gray-200);
+    }
+
+    .contact-grid {
+        display: grid;
+        grid-template-columns: 1fr 1.25fr;
+        gap: 3rem;
+        align-items: start;
+        margin-top: 2rem;
+    }
+
+    .contact-info-card {
+        background: linear-gradient(135deg, #0b1120 0%, #1e293b 100%);
+        border-radius: 20px;
+        padding: 2.75rem 2.25rem;
+        color: white;
+        box-shadow: 0 10px 30px rgba(15, 23, 42, 0.15);
+    }
+
+    .contact-info-card h3 {
+        font-size: 1.6rem;
+        font-weight: 800;
+        margin-bottom: 0.8rem;
+        letter-spacing: -0.02em;
+    }
+
+    .contact-info-card p {
+        color: #94a3b8;
+        font-size: 0.95rem;
+        line-height: 1.65;
+        margin-bottom: 2rem;
+    }
+
+    .contact-meta-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .contact-meta-icon {
+        width: 42px;
+        height: 42px;
+        border-radius: 12px;
+        background: rgba(6, 182, 212, 0.15);
+        color: #38bdf8;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
+    .contact-meta-content h4 {
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: #94a3b8;
+        margin-bottom: 0.25rem;
+    }
+
+    .contact-meta-content a, .contact-meta-content span {
+        color: white;
+        font-weight: 600;
+        font-size: 0.95rem;
+        text-decoration: none;
+    }
+
+    .contact-form-card {
+        background: white;
+        border: 1px solid var(--gray-200);
+        border-radius: 20px;
+        padding: 2.5rem;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.04);
+    }
+
+    .contact-form-card h3 {
+        font-size: 1.45rem;
+        font-weight: 800;
+        color: var(--dark);
+        margin-bottom: 0.4rem;
+    }
+
+    .contact-form-card p {
+        color: var(--gray-600);
+        font-size: 0.92rem;
+        margin-bottom: 1.75rem;
+    }
+
+    .form-group-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.25rem;
+    }
+
+    .form-control-wrap {
+        display: flex;
+        flex-direction: column;
+        gap: 0.4rem;
+        margin-bottom: 1.25rem;
+    }
+
+    .form-control-wrap label {
+        font-size: 0.88rem;
+        font-weight: 700;
+        color: var(--dark);
+    }
+
+    .form-control-wrap input,
+    .form-control-wrap textarea {
+        width: 100%;
+        padding: 0.8rem 1rem;
+        border: 1px solid var(--gray-200);
+        border-radius: 12px;
+        background: #f8fafc;
+        color: var(--dark);
+        font: inherit;
+        box-sizing: border-box;
+        transition: all 0.2s ease;
+    }
+
+    .form-control-wrap input:focus,
+    .form-control-wrap textarea:focus {
+        outline: none;
+        background: #ffffff;
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.18);
+    }
+
+    .form-alert {
+        padding: 1rem 1.25rem;
+        border-radius: 12px;
+        margin-bottom: 1.5rem;
+        font-weight: 600;
+        font-size: 0.92rem;
+    }
+
+    .form-alert.success {
+        background: #dcfce7;
+        color: #166534;
+        border: 1px solid #bbf7d0;
+    }
+
+    .form-alert.error {
+        background: #fee2e2;
+        color: #991b1b;
+        border: 1px solid #fecaca;
+    }
+
     footer {
         border-top: 1px solid var(--gray-200);
         padding: 2.5rem 0;
         text-align: center;
         color: var(--gray-400);
         font-size: 0.9rem;
+    }
+
+    /* PARTNER / ALIADOS SECTION */
+    .partner-section {
+        padding: 5.5rem 0;
+        background-color: var(--white);
+        border-top: 1px solid var(--gray-200);
+    }
+
+    .partner-card {
+        background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
+        border: 1px solid var(--gray-200);
+        border-radius: 24px;
+        padding: 3rem;
+        box-shadow: 0 10px 30px rgba(15, 23, 42, 0.04);
+        display: flex;
+        align-items: center;
+        gap: 3rem;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .partner-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 6px;
+        height: 100%;
+        background: linear-gradient(180deg, var(--primary) 0%, #2563eb 100%);
+    }
+
+    .partner-logo-box {
+        flex: 0 0 220px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem 1.5rem;
+        background: white;
+        border: 1px solid var(--gray-200);
+        border-radius: 18px;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.03);
+        text-align: center;
+        transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .partner-logo-box:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 22px rgba(6, 182, 212, 0.15);
+    }
+
+    .partner-logo-img {
+        max-width: 160px;
+        height: auto;
+        display: block;
+        margin-bottom: 0.75rem;
+    }
+
+    .partner-badge-tech {
+        font-size: 0.75rem;
+        font-weight: 700;
+        color: var(--primary-dark);
+        background: rgba(6, 182, 212, 0.1);
+        padding: 0.25rem 0.65rem;
+        border-radius: 9999px;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+
+    .partner-content {
+        flex: 1;
+    }
+
+    .partner-content h3 {
+        font-size: 1.75rem;
+        font-weight: 800;
+        color: var(--dark);
+        letter-spacing: -0.02em;
+        margin-bottom: 0.75rem;
+    }
+
+    .partner-content p {
+        font-size: 1.02rem;
+        color: var(--gray-600);
+        line-height: 1.7;
+        margin-bottom: 1.5rem;
+    }
+
+    .partner-tags {
+        display: flex;
+        gap: 0.65rem;
+        flex-wrap: wrap;
+        margin-bottom: 1.75rem;
+    }
+
+    .partner-tag-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        padding: 0.35rem 0.8rem;
+        background: #f1f5f9;
+        border-radius: 8px;
+        font-size: 0.82rem;
+        font-weight: 600;
+        color: var(--gray-700);
+    }
+
+    .partner-tag-pill svg {
+        color: var(--primary-dark);
+    }
+
+    .partner-link-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.6rem;
+        padding: 0.8rem 1.6rem;
+        background: linear-gradient(135deg, var(--dark) 0%, #1e293b 100%);
+        color: white;
+        border-radius: 12px;
+        font-weight: 700;
+        font-size: 0.95rem;
+        text-decoration: none;
+        transition: all 0.25s ease;
+        box-shadow: 0 4px 12px rgba(15, 23, 42, 0.15);
+    }
+
+    .partner-link-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(15, 23, 42, 0.25);
+        background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
     }
 
     @media (max-width: 992px) {
@@ -402,6 +685,22 @@
         .dual-box {
             grid-template-columns: 1fr;
         }
+        .contact-grid {
+            grid-template-columns: 1fr;
+        }
+        .partner-card {
+            flex-direction: column;
+            text-align: center;
+            padding: 2.25rem 1.5rem;
+            gap: 2rem;
+        }
+        .partner-card::before {
+            width: 100%;
+            height: 5px;
+        }
+        .partner-tags {
+            justify-content: center;
+        }
     }
 
     @media (max-width: 640px) {
@@ -409,6 +708,9 @@
             grid-template-columns: 1fr;
         }
         .stats-row {
+            grid-template-columns: 1fr;
+        }
+        .form-group-row {
             grid-template-columns: 1fr;
         }
     }
@@ -578,7 +880,7 @@
                     </svg>
                 </div>
                 <h3>Seguridad y Escalabilidad</h3>
-                <p>Construido sobre PHP 8.3 con protección estricta de base de datos, sesiones cifradas y aislamiento seguro fuera del Document Root público.</p>
+                <p>Construido sobre Lenguajes de ultima generacion con protección estricta de base de datos, sesiones cifradas y aislamiento seguro fuera del Document Root público.</p>
             </div>
         </div>
     </div>
@@ -636,8 +938,241 @@
     </div>
 </section>
 
+<!-- SECCIÓN ALIADOS TECNOLÓGICOS -->
+<section class="partner-section" id="aliados">
+    <div class="container">
+        <div class="section-header" style="margin-bottom: 2.5rem;">
+            <span class="section-badge">Alianza Estratégica</span>
+            <h2 class="section-title">Innovación y Desarrollo Tecnológico</h2>
+            <p class="section-desc">
+                Todo el desarrollo de la arquitectura tecnológica, seguridad cloud y funcionalidades de nuestro ecosistema SaaS se realiza de la mano de nuestro aliado estratégico.
+            </p>
+        </div>
+
+        <div class="partner-card">
+            <div class="partner-logo-box">
+                <a href="https://venecode.com" target="_blank" rel="noopener noreferrer" title="Ir al sitio oficial de Venecode">
+                    <img src="<?= url('/assets/img/partner/venecode.png') ?>" alt="Venecode - Aliado Tecnológico" class="partner-logo-img">
+                </a>
+                <span class="partner-badge-tech">Aliado Tecnológico</span>
+            </div>
+
+            <div class="partner-content">
+                <h3>Venecode • Soluciones Tecnológicas & Desarrollo de Software</h3>
+                <p>
+                    En el <strong>Sistema NFC</strong> todo el desarrollo de la parte de tecnología, ingeniería de software, basado en Apis y tecnologia multiserviciso e integraciones contactless se realiza de la mano de <strong>Venecode</strong>, garantizando una plataforma robusta, escalable y con altos estándares de calidad internacional.
+                </p>
+
+                <div class="partner-tags">
+                    <span class="partner-tag-pill">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                        Arquitectura Cloud Segura
+                    </span>
+                    <span class="partner-tag-pill">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                        Desarrollo Web & SaaS a Medida
+                    </span>
+                    <span class="partner-tag-pill">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                        Innovación Contactless NFC
+                    </span>
+                </div>
+
+                <a href="https://venecode.com" target="_blank" rel="noopener noreferrer" class="partner-link-btn">
+                    <span>Visitar venecode.com</span>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                        <polyline points="15 3 21 3 21 9"></polyline>
+                        <line x1="10" y1="14" x2="21" y2="3"></line>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- SECCIÓN CONTACTO -->
+<section class="contact-section" id="contacto">
+    <div class="container">
+        <div class="section-header" style="margin-bottom: 2rem;">
+            <div class="section-tag">Hablemos de tu Proyecto</div>
+            <h2 class="section-title">Contáctanos y solicita una cotización</h2>
+            <p class="section-desc">
+                ¿Interesado en implementar tarjetas inteligentes NFC en tu organización? Déjanos tus datos y un especialista corporativo se comunicará contigo de inmediato.
+            </p>
+        </div>
+
+        <?php if (!empty($success)): ?>
+            <div class="form-alert success">
+                <strong>&check; ¡Mensaje enviado con éxito!</strong><br>
+                <?= e($success) ?>
+            </div>
+        <?php endif; ?>
+
+        <?php if (!empty($error)): ?>
+            <div class="form-alert error">
+                <strong>&excl; Atención:</strong><br>
+                <?= e($error) ?>
+            </div>
+        <?php endif; ?>
+
+        <div class="contact-grid">
+            <div class="contact-info-card">
+                <h3>Transforma la presencia digital de tu equipo</h3>
+                <p>
+                    Ofrecemos planes escalables para emprendedores, pymes y corporaciones. Configuración de marca blanca, dominios personalizados e inventario de tarjetas grabado a láser.
+                </p>
+
+                <div class="contact-meta-item">
+                    <div class="contact-meta-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                            <polyline points="22,6 12,13 2,6"></polyline>
+                        </svg>
+                    </div>
+                    <div class="contact-meta-content">
+                        <h4>Correo Comercial</h4>
+                        <a href="mailto:venecode.contact@gmail.com">venecode.contact@gmail.com</a>
+                    </div>
+                </div>
+
+                <div class="contact-meta-item">
+                    <div class="contact-meta-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                        </svg>
+                    </div>
+                    <div class="contact-meta-content">
+                        <h4>Atención Inmediata</h4>
+                        <span>Soporte comercial para empresas</span>
+                    </div>
+                </div>
+
+                <div class="contact-meta-item">
+                    <div class="contact-meta-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+                            <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+                        </svg>
+                    </div>
+                    <div class="contact-meta-content">
+                        <h4>Modalidad</h4>
+                        <span>Plataforma SaaS B2B Multi-Empresa</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="contact-form-card">
+                <h3>Envíanos un mensaje</h3>
+                <p>Completa el formulario y te contactaremos en menos de 24 horas.</p>
+
+                <form method="post" action="<?= url('/contacto') ?>">
+                    <?= csrf_field() ?>
+
+                    <div class="form-group-row">
+                        <div class="form-control-wrap">
+                            <label for="c_name">Nombre y Apellido *</label>
+                            <input id="c_name" name="name" type="text" maxlength="120" required placeholder="Ej: Carlos Silva" autocomplete="name">
+                        </div>
+                        <div class="form-control-wrap">
+                            <label for="c_company">Nombre de la Empresa *</label>
+                            <input id="c_company" name="company_name" type="text" maxlength="150" required placeholder="Ej: Corporación Alpha C.A." autocomplete="organization">
+                        </div>
+                    </div>
+
+                    <div class="form-group-row">
+                        <div class="form-control-wrap">
+                            <label for="c_email">Correo Electrónico *</label>
+                            <input id="c_email" name="email" type="email" maxlength="150" required placeholder="carlos@miempresa.com" autocomplete="email">
+                        </div>
+                        <div class="form-control-wrap">
+                            <label for="c_phone">Número de Teléfono *</label>
+                            <input id="c_phone" name="phone" type="tel" maxlength="50" required placeholder="+58 412 1234567" autocomplete="tel">
+                        </div>
+                    </div>
+
+                    <div class="form-control-wrap">
+                        <label for="c_message">Mensaje / Requerimiento (Opcional)</label>
+                        <textarea id="c_message" name="message" rows="4" placeholder="¿Cuántas tarjetas requiere tu empresa o qué características te gustaría cotizar?"></textarea>
+                    </div>
+
+                    <div class="form-control-wrap" style="margin-bottom: 1.5rem;">
+                        <label for="captcha-input-contact">Código de Seguridad Anti-Spam *</label>
+                        <div style="display: flex; gap: 0.75rem; align-items: center; margin-bottom: 0.5rem; flex-wrap: wrap;">
+                            <img 
+                                id="captcha-image-contact" 
+                                src="<?= $captchaImage ?>" 
+                                alt="Código CAPTCHA" 
+                                style="height: 44px; border-radius: 10px; border: 1px solid var(--gray-200); cursor: pointer; background: #fff;"
+                                title="Haz clic sobre la imagen para recargar el código"
+                                onclick="reloadCaptcha('contact')"
+                            >
+                            <button 
+                                type="button" 
+                                onclick="reloadCaptcha('contact')" 
+                                title="Recargar nuevo código"
+                                style="background: #f1f5f9; border: 1px solid var(--gray-200); border-radius: 10px; padding: 0.7rem 0.9rem; cursor: pointer; color: var(--gray-700); display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.85rem; font-weight: 600; font-family: inherit; transition: all 0.2s;"
+                            >
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="23 4 23 10 17 10"></polyline>
+                                    <polyline points="1 20 1 14 7 14"></polyline>
+                                    <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+                                </svg>
+                                Recargar
+                            </button>
+                        </div>
+                        <input 
+                            id="captcha-input-contact" 
+                            name="captcha" 
+                            type="text" 
+                            maxlength="6" 
+                            required 
+                            placeholder="Escribe los 5 caracteres que ves arriba" 
+                            autocomplete="off"
+                            style="text-transform: uppercase; font-weight: 700; letter-spacing: 0.1em;"
+                        >
+                        <span style="font-size: 0.76rem; color: var(--gray-600); margin-top: 0.2rem; display: block;">
+                            Validación para proteger el formulario contra envíos automatizados y ataques de fuerza bruta.
+                        </span>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" style="width: 100%; padding: 0.95rem; font-size: 1rem; border-radius: 12px;">
+                        Enviar Solicitud de Contacto
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="22" y1="2" x2="11" y2="13"></line>
+                            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                        </svg>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+function reloadCaptcha(action) {
+    fetch('<?= url('/captcha/refresh') ?>?action=' + encodeURIComponent(action))
+        .then(function(res) { return res.json(); })
+        .then(function(data) {
+            if (data && data.image) {
+                var img = document.getElementById('captcha-image-' + action);
+                if (img) img.src = data.image;
+                var input = document.getElementById('captcha-input-' + action);
+                if (input) { input.value = ''; input.focus(); }
+            }
+        })
+        .catch(function(err) { console.error('Error al recargar captcha:', err); });
+}
+</script>
+
 <footer>
     <div class="container">
-        <p>&copy; <?= date('Y') ?> Sistema NFC SaaS. Todos los derechos reservados. Desarrollado para PHP 8.3.</p>
+        <p>&copy; <?= date('Y') ?> Sistema NFC SaaS. Todos los derechos reservados.</p>
     </div>
 </footer>

@@ -7,6 +7,7 @@ namespace App\Controllers;
 use App\Core\Request;
 use App\Core\Session;
 use App\Models\User;
+use App\Services\CaptchaService;
 
 final class AuthController extends BaseController
 {
@@ -27,11 +28,13 @@ final class AuthController extends BaseController
 
         $error = Session::flash('error');
         $oldEmail = Session::flash('old_email');
+        $captchaImage = CaptchaService::generate('login');
 
         $this->view('auth/login', [
-            'title'    => 'Iniciar Sesión | Sistema NFC SaaS',
-            'error'    => $error,
-            'oldEmail' => $oldEmail,
+            'title'        => 'Iniciar Sesión | Sistema NFC SaaS',
+            'error'        => $error,
+            'oldEmail'     => $oldEmail,
+            'captchaImage' => $captchaImage,
         ], 'auth');
     }
 
@@ -47,6 +50,15 @@ final class AuthController extends BaseController
 
         $email = trim((string)$request->post('email', ''));
         $password = (string)$request->post('password', '');
+        $captcha = trim((string)$request->post('captcha', ''));
+
+        // Validación anti-fuerza bruta con CAPTCHA
+        if (!CaptchaService::validate('login', $captcha)) {
+            Session::flash('error', 'Código de seguridad (CAPTCHA) incorrecto o vencido. Inténtalo de nuevo.');
+            Session::flash('old_email', $email);
+            redirect('/login');
+            return;
+        }
 
         if ($email === '' || $password === '') {
             Session::flash('error', 'Por favor ingresa tu correo y contraseña.');

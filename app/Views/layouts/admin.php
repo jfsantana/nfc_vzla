@@ -208,6 +208,8 @@
             $isUserCreate = str_contains($currentUri, '/admin/users/new');
             $isSystemUsers = str_contains($currentUri, '/admin/system-users') && !str_contains($currentUri, '/admin/system-users/new');
             $isSystemUserCreate = str_contains($currentUri, '/admin/system-users/new');
+            $isClients = str_contains($currentUri, '/admin/clients') && !str_contains($currentUri, '/admin/clients/new');
+            $isClientCreate = str_contains($currentUri, '/admin/clients/new');
         ?>
 
         <nav class="sidebar-nav">
@@ -271,6 +273,22 @@
                     <line x1="5" y1="12" x2="19" y2="12"></line>
                 </svg>
                 + Crear Administrador
+            </a>
+
+            <a href="<?= url('/admin/clients') ?>" class="nav-link-item<?= $isClients ? ' active' : '' ?>">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="9" cy="7" r="4"></circle>
+                    <polyline points="16 11 18 13 22 9"></polyline>
+                </svg>
+                Clientes / Prospectos
+            </a>
+            <a href="<?= url('/admin/clients/new') ?>" class="nav-sub-item<?= $isClientCreate ? ' active' : '' ?>">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                </svg>
+                + Nuevo Cliente
             </a>
 
             <a href="#" class="nav-link-item">

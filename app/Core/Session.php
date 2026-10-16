@@ -9,19 +9,23 @@ final class Session
     public static function start(): void
     {
         if (session_status() === PHP_SESSION_NONE) {
-            $lifetime = (int)($_ENV['SESSION_LIFETIME'] ?? 120) * 60;
-            $secure = filter_var($_ENV['SESSION_SECURE_COOKIE'] ?? false, FILTER_VALIDATE_BOOLEAN);
+            if (!headers_sent()) {
+                $lifetime = (int)($_ENV['SESSION_LIFETIME'] ?? 120) * 60;
+                $secure = filter_var($_ENV['SESSION_SECURE_COOKIE'] ?? false, FILTER_VALIDATE_BOOLEAN);
 
-            session_set_cookie_params([
-                'lifetime' => $lifetime,
-                'path'     => '/',
-                'domain'   => '',
-                'secure'   => $secure,
-                'httponly' => true,
-                'samesite' => 'Lax'
-            ]);
+                session_set_cookie_params([
+                    'lifetime' => $lifetime,
+                    'path'     => '/',
+                    'domain'   => '',
+                    'secure'   => $secure,
+                    'httponly' => true,
+                    'samesite' => 'Lax'
+                ]);
 
-            session_start();
+                session_start();
+            } else {
+                @session_start();
+            }
         }
     }
 

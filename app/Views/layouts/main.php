@@ -199,6 +199,8 @@
                 <li><a href="#caracteristicas">Características</a></li>
                 <li><a href="#perfiles">Perfiles Duales</a></li>
                 <li><a href="#metricas">Analíticas</a></li>
+                <li><a href="#aliados">Aliados</a></li>
+                <li><a href="#contacto">Contáctanos</a></li>
             </ul>
 
             <div class="nav-actions">

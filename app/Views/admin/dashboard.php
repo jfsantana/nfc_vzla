@@ -180,10 +180,6 @@
     <table style="width: 100%; border-collapse: collapse; font-size: 0.95rem;">
         <tbody>
             <tr style="border-bottom: 1px solid var(--gray-200);">
-                <td style="padding: 1rem 0; font-weight: 600; color: var(--dark);">Versión de PHP</td>
-                <td style="padding: 1rem 0; color: var(--gray-600);"><?= PHP_VERSION ?> (Requerido 8.3+)</td>
-            </tr>
-            <tr style="border-bottom: 1px solid var(--gray-200);">
                 <td style="padding: 1rem 0; font-weight: 600; color: var(--dark);">Conexión a Base de Datos</td>
                 <td style="padding: 1rem 0;">
                     <span class="status-badge">

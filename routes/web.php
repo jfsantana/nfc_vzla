@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 use App\Controllers\AdminController;
 use App\Controllers\AuthController;
+use App\Controllers\CaptchaController;
+use App\Controllers\ClientsController;
 use App\Controllers\CompaniesController;
 use App\Controllers\CompanyPortalController;
 use App\Controllers\HomeController;
@@ -13,13 +15,18 @@ use App\Core\Router;
 
 /** @var Router $router */
 
-// Landing Page pública
+// Landing Page pública y recepción de contacto comercial
 $router->get('/', [HomeController::class, 'index']);
+$router->post('/contacto', [HomeController::class, 'contact']);
 
 // Autenticación
 $router->get('/login', [AuthController::class, 'showLogin']);
 $router->post('/login', [AuthController::class, 'login']);
 $router->post('/logout', [AuthController::class, 'logout']);
+
+// Seguridad y CAPTCHA
+$router->get('/captcha/refresh', [CaptchaController::class, 'refresh']);
+$router->get('/captcha/image', [CaptchaController::class, 'image']);
 
 // Panel de Administración (SuperAdmin)
 $router->get('/admin/dashboard', [AdminController::class, 'dashboard']);
@@ -46,6 +53,14 @@ $router->get('/admin/system-users/edit', [SystemUsersController::class, 'edit'])
 $router->post('/admin/system-users/store', [SystemUsersController::class, 'store']);
 $router->post('/admin/system-users/update', [SystemUsersController::class, 'update']);
 $router->post('/admin/system-users/delete', [SystemUsersController::class, 'delete']);
+
+// CRUD de clientes y prospectos (Leads)
+$router->get('/admin/clients', [ClientsController::class, 'index']);
+$router->get('/admin/clients/new', [ClientsController::class, 'new']);
+$router->get('/admin/clients/edit', [ClientsController::class, 'edit']);
+$router->post('/admin/clients/store', [ClientsController::class, 'store']);
+$router->post('/admin/clients/update', [ClientsController::class, 'update']);
+$router->post('/admin/clients/delete', [ClientsController::class, 'delete']);
 
 // Panel básico para el usuario administrador de cada empresa
 $router->get('/company/dashboard', [CompanyPortalController::class, 'dashboard']);
