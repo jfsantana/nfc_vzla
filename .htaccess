@@ -1,9 +1,0 @@
-# Proteccion para el acceso local mediante localhost/sistemaNFC/.
-# En produccion, configurar el DocumentRoot directamente en public/.
-Options -Indexes
-
-RewriteEngine On
-RewriteRule ^$ /sistemaNFC/public/ [R=302,L]
-
-# Solo public/ debe ser accesible por HTTP; bloquear codigo y configuracion.
-RewriteRule ^(?!public(?:/|$)) - [F,L,NC]
