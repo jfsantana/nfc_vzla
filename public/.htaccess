@@ -4,6 +4,9 @@ DirectoryIndex index.php
 <IfModule mod_rewrite.c>
     RewriteEngine On
 
+    # Si la petición incluye el prefijo 'public/' en la URL cuando DocumentRoot ya apunta a public, reescribir internamente
+    RewriteRule ^public/(.*)$ $1 [L,QSA]
+
     # Si la peticion no es un archivo ni directorio existente, enviar a index.php
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d

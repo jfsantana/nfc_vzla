@@ -300,7 +300,14 @@
             </a>
 
             <!-- INVENTARIO -->
-            <div class="sidebar-section-title">Inventario</div>
+            <div class="sidebar-section-title">Inventario & Tarjetas</div>
+            <a href="<?= url('/public/assets/card/jsantana/index.php') ?>" target="_blank" class="nav-link-item">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+                Mi Tarjeta (Jesus Santana)
+            </a>
             <a href="#" class="nav-link-item">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <rect x="2" y="5" width="20" height="14" rx="2"></rect>
@@ -338,7 +345,14 @@
             <div>
                 <span class="role-badge"><?= e($roleName ?? 'Super Administrador') ?></span>
             </div>
-            <div style="display: flex; align-items: center; gap: 1rem;">
+            <div style="display: flex; align-items: center; gap: 0.85rem;">
+                <a href="<?= url('/public/assets/card/jsantana/index.php') ?>" target="_blank" style="font-size: 0.85rem; font-weight: 700; color: #0891b2; background: rgba(6, 182, 212, 0.1); border: 1px solid rgba(6, 182, 212, 0.25); padding: 0.45rem 0.9rem; border-radius: 8px; display: flex; align-items: center; gap: 0.45rem; text-decoration: none;">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="2" y="5" width="20" height="14" rx="2"></rect>
+                        <line x1="2" y1="10" x2="22" y2="10"></line>
+                    </svg>
+                    Mi Tarjeta NFC
+                </a>
                 <a href="<?= url('/') ?>" target="_blank" style="font-size: 0.88rem; font-weight: 600; color: var(--primary-dark); display: flex; align-items: center; gap: 0.35rem;">
                     Ver Landing Pública
                     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">

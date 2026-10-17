@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Controllers\AdminController;
 use App\Controllers\AuthController;
 use App\Controllers\CaptchaController;
+use App\Controllers\CardController;
 use App\Controllers\ClientsController;
 use App\Controllers\CompaniesController;
 use App\Controllers\CompanyPortalController;
@@ -64,3 +65,11 @@ $router->post('/admin/clients/delete', [ClientsController::class, 'delete']);
 
 // Panel básico para el usuario administrador de cada empresa
 $router->get('/company/dashboard', [CompanyPortalController::class, 'dashboard']);
+
+// Tarjeta de Presentación Digital (Jesus Santana - VeneCode NFC Vzla)
+$router->get('/public/assets/card/jsantana/index.php', [CardController::class, 'jsantana']);
+$router->get('/public/assets/card/jsantana', [CardController::class, 'jsantana']);
+$router->get('/assets/card/jsantana/index.php', [CardController::class, 'jsantana']);
+$router->get('/assets/card/jsantana', [CardController::class, 'jsantana']);
+$router->get('/card/jsantana', [CardController::class, 'jsantana']);
+$router->get('/c/jsantana', [CardController::class, 'jsantana']);

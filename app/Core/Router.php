@@ -32,6 +32,26 @@ final class Router
         $handler = $this->routes[$method][$uri] ?? null;
 
         if ($handler === null) {
+            // Verificar si la petición apunta a un archivo ejecutable existente en public/ (ej: assets/card/.../index.php)
+            $cleanUri = trim($uri, '/');
+            $candidates = [
+                BASE_PATH . '/' . $cleanUri,
+                BASE_PATH . '/public/' . $cleanUri,
+                BASE_PATH . '/public/' . (preg_replace('#^public/#i', '', $cleanUri) ?? ''),
+            ];
+
+            foreach ($candidates as $candidate) {
+                if (is_file($candidate)) {
+                    if (str_ends_with($candidate, '.php')) {
+                        require $candidate;
+                        return;
+                    }
+                } elseif (is_dir($candidate) && is_file($candidate . '/index.php')) {
+                    require $candidate . '/index.php';
+                    return;
+                }
+            }
+
             http_response_code(404);
             View::render('errors/404', ['uri' => $uri]);
             return;

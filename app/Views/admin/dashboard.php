@@ -117,6 +117,27 @@
     <p>Bienvenido, <strong><?= e($userName) ?></strong>. Control central del ecosistema B2B de tarjetas NFC.</p>
 </div>
 
+<!-- ACCESO DIRECTO A MI TARJETA DIGITAL -->
+<div style="background: linear-gradient(135deg, #0b1120 0%, #1e293b 100%); border-radius: 16px; padding: 1.4rem 1.8rem; margin-bottom: 2rem; color: white; display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; flex-wrap: wrap; box-shadow: 0 4px 20px rgba(15, 23, 42, 0.12); border: 1px solid #1e293b;">
+    <div style="display: flex; align-items: center; gap: 1.25rem;">
+        <div style="width: 48px; height: 48px; border-radius: 12px; background: linear-gradient(135deg, #00B4DB, #0083B0); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.25rem; color: white; flex-shrink: 0; box-shadow: 0 0 15px rgba(0, 180, 219, 0.4);">
+            JS
+        </div>
+        <div>
+            <h3 style="font-size: 1.1rem; font-weight: 800; margin-bottom: 0.2rem; color: white;">Tarjeta de Presentación Digital (Jesus Santana)</h3>
+            <p style="font-size: 0.85rem; color: #94a3b8; margin: 0;">VeneCode - NFC Vzla &bull; Perfil profesional y vCard digital activo</p>
+        </div>
+    </div>
+    <a href="<?= url('/public/assets/card/jsantana/index.php') ?>" target="_blank" style="background: linear-gradient(135deg, #06b6d4, #0891b2); color: white; font-weight: 700; font-size: 0.9rem; padding: 0.65rem 1.25rem; border-radius: 10px; text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem; transition: all 0.2s; box-shadow: 0 4px 12px rgba(6, 182, 212, 0.35);">
+        <span>Ver Mi Card en Vivo</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+            <polyline points="15 3 21 3 21 9"></polyline>
+            <line x1="10" y1="14" x2="21" y2="3"></line>
+        </svg>
+    </a>
+</div>
+
 <div class="metrics-grid">
     <div class="metric-card">
         <div class="metric-top">
