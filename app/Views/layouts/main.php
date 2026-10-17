@@ -172,9 +172,168 @@
             box-shadow: 0 6px 16px rgba(15, 23, 42, 0.2);
         }
 
+        /* BOTÓN HAMBURGUESA */
+        .btn-hamburger {
+            display: none;
+            width: 44px;
+            height: 44px;
+            padding: 10px 8px;
+            background: #f8fafc;
+            border: 1px solid var(--gray-200);
+            border-radius: 12px;
+            cursor: pointer;
+            flex-direction: column;
+            justify-content: space-around;
+            align-items: center;
+            transition: all 0.25s ease;
+        }
+
+        .btn-hamburger:hover {
+            background: #f1f5f9;
+            border-color: var(--primary);
+        }
+
+        .hamburger-bar {
+            width: 22px;
+            height: 2.5px;
+            background-color: var(--dark);
+            border-radius: 999px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-origin: center;
+        }
+
+        /* Animación del ícono hamburguesa a X */
+        .btn-hamburger.active .hamburger-bar:nth-child(1) {
+            transform: translateY(7px) rotate(45deg);
+        }
+
+        .btn-hamburger.active .hamburger-bar:nth-child(2) {
+            opacity: 0;
+            transform: scaleX(0);
+        }
+
+        .btn-hamburger.active .hamburger-bar:nth-child(3) {
+            transform: translateY(-7px) rotate(-45deg);
+        }
+
+        /* MENÚ MÓVIL DESPLEGABLE */
+        .mobile-nav-drawer {
+            position: absolute;
+            top: 78px;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--gray-200);
+            box-shadow: 0 20px 30px -10px rgba(15, 23, 42, 0.12);
+            padding: 1.25rem 1.5rem;
+            display: none;
+            flex-direction: column;
+            gap: 0.35rem;
+            z-index: 99;
+            transform: translateY(-8px);
+            opacity: 0;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .mobile-nav-drawer.open {
+            display: flex;
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .mobile-nav-link {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.8rem 1.1rem;
+            border-radius: 12px;
+            font-size: 0.98rem;
+            font-weight: 700;
+            color: var(--gray-700);
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .mobile-nav-link:hover,
+        .mobile-nav-link:active {
+            background: rgba(6, 182, 212, 0.08);
+            color: var(--primary-dark);
+            transform: translateX(4px);
+        }
+
+        .mobile-nav-divider {
+            height: 1px;
+            background: var(--gray-100);
+            margin: 0.4rem 0;
+        }
+
         @media (max-width: 868px) {
             .nav-links {
                 display: none;
+            }
+
+            .btn-hamburger {
+                display: flex;
+            }
+
+            .nav-actions {
+                gap: 0.65rem;
+            }
+
+            .btn-contact-nav {
+                padding: 0.6rem 1.15rem;
+                font-size: 0.88rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav-inner {
+                height: 70px;
+            }
+
+            .mobile-nav-drawer {
+                top: 70px;
+            }
+
+            .logo {
+                font-size: 1.15rem;
+                gap: 0.5rem;
+            }
+
+            .logo-icon {
+                width: 34px;
+                height: 34px;
+            }
+
+            .btn-contact-nav {
+                padding: 0.5rem 0.85rem;
+                font-size: 0.82rem;
+                gap: 0.35rem;
+            }
+
+            .btn-contact-nav svg {
+                width: 15px;
+                height: 15px;
+            }
+
+            .btn-hamburger {
+                width: 38px;
+                height: 38px;
+                padding: 8px 6px;
+            }
+
+            .hamburger-bar {
+                width: 18px;
+            }
+
+            .btn-hamburger.active .hamburger-bar:nth-child(1) {
+                transform: translateY(6px) rotate(45deg);
+            }
+
+            .btn-hamburger.active .hamburger-bar:nth-child(3) {
+                transform: translateY(-6px) rotate(-45deg);
             }
         }
     </style>
@@ -204,17 +363,111 @@
             </ul>
 
             <div class="nav-actions">
-                <a href="<?= url('/login') ?>" class="btn btn-primary">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
-                        <polyline points="10 17 15 12 10 7"/>
-                        <line x1="15" y1="12" x2="3" y2="12"/>
+                <a href="#contacto" class="btn btn-primary btn-contact-nav" title="Ir al formulario de contacto">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
                     </svg>
-                    Iniciar Sesión
+                    <span>Contáctanos</span>
                 </a>
+
+                <button type="button" class="btn-hamburger" id="hamburger-btn" aria-label="Abrir menú" aria-expanded="false">
+                    <span class="hamburger-bar"></span>
+                    <span class="hamburger-bar"></span>
+                    <span class="hamburger-bar"></span>
+                </button>
             </div>
         </div>
+
+        <!-- MENÚ MÓVIL DESPLEGABLE -->
+        <nav class="mobile-nav-drawer" id="mobile-menu" aria-label="Menú móvil">
+            <a href="#inicio" class="mobile-nav-link">
+                <span>Inicio</span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </a>
+            <a href="#caracteristicas" class="mobile-nav-link">
+                <span>Características</span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </a>
+            <a href="#perfiles" class="mobile-nav-link">
+                <span>Perfiles Duales</span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </a>
+            <a href="#metricas" class="mobile-nav-link">
+                <span>Analíticas</span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </a>
+            <a href="#aliados" class="mobile-nav-link">
+                <span>Aliados (Venecode)</span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </a>
+            <a href="#contacto" class="mobile-nav-link">
+                <span>Formulario de Contacto</span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </a>
+            <div class="mobile-nav-divider"></div>
+            <a href="<?= url('/login') ?>" class="mobile-nav-link" style="color: var(--primary-dark);">
+                <span>Acceso al Panel SaaS</span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path><polyline points="10 17 15 12 10 7"></polyline><line x1="15" y1="12" x2="3" y2="12"></line></svg>
+            </a>
+        </nav>
     </header>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var hamburgerBtn = document.getElementById('hamburger-btn');
+        var mobileMenu = document.getElementById('mobile-menu');
+
+        if (!hamburgerBtn || !mobileMenu) return;
+
+        function toggleMenu() {
+            var isOpen = mobileMenu.classList.contains('open');
+            if (isOpen) {
+                closeMenu();
+            } else {
+                openMenu();
+            }
+        }
+
+        function openMenu() {
+            mobileMenu.classList.add('open');
+            hamburgerBtn.classList.add('active');
+            hamburgerBtn.setAttribute('aria-expanded', 'true');
+        }
+
+        function closeMenu() {
+            mobileMenu.classList.remove('open');
+            hamburgerBtn.classList.remove('active');
+            hamburgerBtn.setAttribute('aria-expanded', 'false');
+        }
+
+        hamburgerBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            toggleMenu();
+        });
+
+        // Cerrar menú al hacer clic en cualquier enlace del menú móvil
+        var mobileLinks = mobileMenu.querySelectorAll('a');
+        mobileLinks.forEach(function(link) {
+            link.addEventListener('click', function() {
+                closeMenu();
+            });
+        });
+
+        // Cerrar si se hace clic fuera del menú o del botón hamburguesa
+        document.addEventListener('click', function(e) {
+            if (!mobileMenu.contains(e.target) && !hamburgerBtn.contains(e.target)) {
+                closeMenu();
+            }
+        });
+
+        // Cerrar con tecla Escape
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeMenu();
+            }
+        });
+    });
+    </script>
 
     <main>
         <?= $content ?>
