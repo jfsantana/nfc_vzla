@@ -1,0 +1,12 @@
+BEGIN:VCARD
+VERSION:3.0
+N:Santana;Jesus;;;
+FN:Jesus Santana
+ORG:Venecode
+TITLE:Director General
+TEL;TYPE=CELL,VOICE:+584244380137
+EMAIL;TYPE=INTERNET,WORK:venecode.contact@gmail.com
+ADR;TYPE=WORK:;;;Valencia;Carabobo;;Venezuela
+URL:https://nfcvzla.venecode.com/
+NOTE:Empresa de tecnología y generación de NFC
+END:VCARD

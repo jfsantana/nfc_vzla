@@ -355,7 +355,7 @@
         <p class="description">Digitalización de empresas y<br>Desarrollo de apps.</p>
 
         <!-- Botón -->
-        <a href="#" class="btn-save">
+        <a href="/jesus-santana.vcf" download="Jesus-Santana.vcf">
             <i class="fas fa-user-plus"></i>
             Guardar contacto
         </a>
@@ -456,7 +456,7 @@
         <div class="footer">
             <div class="social-title" style="font-size: 11px; color: var(--text-gray); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px;">Sigueme</div>
             <div class="social-icons" style="margin-bottom: 30px;">
-                <a href="https://www.instagram.com/jfsantana77/" class="social-circle"><i class="fab fa-instagram"></i></a>
+                <a href="https://www.instagram.com/venecode.contact/" class="social-circle"><i class="fab fa-instagram"></i></a>
                 <a href="https://www.linkedin.com/in/jesus-f-santana-s-22687831/" class="social-circle"><i class="fab fa-linkedin-in"></i></a>
                 
             </div>
