@@ -33,3 +33,5 @@ Desktop.ini
 *.bak
 app/Config/Database.php.htaccess
 app/Config/Database.php
+public/.htaccess
+.htaccess
