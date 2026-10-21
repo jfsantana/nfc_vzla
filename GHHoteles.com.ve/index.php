@@ -51,7 +51,7 @@ $destinos = [
         'desc' => 'Ubicación privilegiada en Acarigua-Araure, servicios de primera y eventos.'
     ],
     [
-        'title' => 'Voco Surfside Aruba',
+        'title' => 'voco Surfside Aruba',
         'city' => 'Surfside Beach, Aruba',
         'badge' => 'by IHG · Sitio Web',
         'url' => 'https://tottaruba.com/',
