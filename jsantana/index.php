@@ -36,6 +36,7 @@
             width: 100%;
             max-width: 480px;
             padding: 50px 25px;
+            padding-bottom: calc(110px + env(safe-area-inset-bottom, 0px));
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -298,6 +299,38 @@
             box-shadow: 0 0 15px rgba(0, 180, 219, 0.3);
         }
 
+        .instagram-float {
+            position: fixed;
+            right: calc(16px + env(safe-area-inset-right, 0px));
+            bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+            z-index: 1000;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            min-height: 52px;
+            padding: 14px 20px;
+            border-radius: 999px;
+            background: linear-gradient(135deg, #833ab4, #b51f65, #a83232);
+            color: #fff;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            box-shadow: 0 6px 24px rgba(181, 31, 101, 0.4);
+        }
+
+        .instagram-float i {
+            font-size: 24px;
+        }
+
+        .instagram-float:hover {
+            background: linear-gradient(135deg, #6e3098, #981a55, #902b2b);
+        }
+
+        .instagram-float:focus-visible {
+            outline: 3px solid #fff;
+            outline-offset: 4px;
+        }
+
         .footer {
             margin-top: 40px;
             text-align: center;
@@ -355,7 +388,7 @@
         <p class="description">Digitalización de empresas y<br>Desarrollo de apps.</p>
 
         <!-- Botón -->
-        <a href="/jsantana/jesus-santana.vcf" download="Jesus-Santana.vcf" class="btn-save">
+        <a href="#" class="btn-save">
             <i class="fas fa-user-plus"></i>
             Guardar contacto
         </a>
@@ -470,6 +503,15 @@
         </div>
 
     </div>
+
+    <a href="https://www.instagram.com/venecode.contact/"
+       class="instagram-float"
+       target="_blank"
+       rel="noopener noreferrer"
+       aria-label="Sígueme en Instagram: @venecode.contact (abre en una nueva pestaña)">
+        <i class="fab fa-instagram" aria-hidden="true"></i>
+        <span>Sígueme en Instagram</span>
+    </a>
 
 </body>
 </html>
