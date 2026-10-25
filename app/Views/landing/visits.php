@@ -141,14 +141,6 @@ $formatDate = static fn (string $value): string => (new DateTimeImmutable(
             <?php endforeach; ?>
         </dl>
 
-        <?php if ($statistics['initialViews']['total'] > 0): ?>
-            <section class="panel">
-                <h2>Ajuste hist&oacute;rico manual: <?= $formatNumber($statistics['initialViews']['total']) ?></h2>
-                <p>Estas visitas se distribuyen por fecha como ajuste hist&oacute;rico manual; no corresponden a mediciones autom&aacute;ticas del contador.</p>
-                <p>El ajuste se suma a las visitas registradas de cada fecha. Permanece en el total hist&oacute;rico, pero sale de los indicadores y del desglose de 7 y 30 d&iacute;as cuando esas fechas quedan fuera del per&iacute;odo.</p>
-                <p>Visitas registradas autom&aacute;ticamente desde la instalaci&oacute;n: <strong><?= $formatNumber($statistics['recordedTotal']) ?></strong>.</p>
-            </section>
-        <?php endif; ?>
 
         <?php if ($statistics['total'] === 0): ?>
             <section class="panel empty">
