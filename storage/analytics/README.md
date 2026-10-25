@@ -25,6 +25,40 @@ No se pueden recuperar visitas previas a la instalacion. Los ultimos 7 y 30 dias
 son dias calendario incluyendo hoy, en `America/Caracas`. Los dias sin visitas
 se muestran con cero. La consulta del panel no registra una visita.
 
+### Ajuste historico manual de GH Hoteles
+
+GH Hoteles tiene **78** visitas de ajuste historico manual configuradas por
+fecha en `LandingVisitService::INITIAL_VIEWS`:
+
+| Fecha | Porcentaje solicitado | Visitas asignadas |
+| --- | --- | --- |
+| 2026-10-24 | 60% | 47 |
+| 2026-10-23 | 15% | 12 |
+| 2026-10-22 | 25% | 19 |
+
+Se toman las partes enteras (46, 11, 19) y se asignan las dos unidades restantes
+a los mayores residuos decimales (0.8 y 0.7), conservando exactamente 78.
+Es una distribucion manual solicitada, no mediciones automaticas recuperadas.
+
+El ajuste se suma a los datos registrados de cada fecha, sin reemplazarlos:
+
+- El total historico conserva las 78 visitas.
+- Hoy solo incluye un ajuste si coincide con su fecha; el 25/10 no incluye ninguno.
+- Los indicadores de 7/30 dias y el desglose diario incluyen solo las fechas
+  dentro de su ventana. Cada tarjeta indica el ajuste manual incluido.
+- En 7 dias, el ajuste baja a 59 el 29/10/2026, a 47 el 30/10 y a 0 el 31/10.
+- En 30 dias, baja a 59 el 21/11/2026, a 47 el 22/11 y a 0 el 23/11.
+- Jesus Santana no tiene ajuste y conserva su conteo original.
+- Las fechas de primera/ultima visita y el total registrado automaticamente
+  siguen refiriendose exclusivamente a mediciones del contador.
+
+No se insertan las 78 visitas en SQLite ni se modifica el historial existente.
+Publicar este cambio solo requiere desplegar el servicio y la vista; no hay
+migraciones ni comandos de inicializacion. Consultar varias veces o volver a
+desplegar no duplica el ajuste: se suma una sola vez al calcular los resultados.
+Ante un error de SQLite, se mantiene el aviso HTTP 503; no se muestra el ajuste
+como si la consulta hubiera funcionado.
+
 ## Instalacion y persistencia
 
 Requiere PHP 8.3 o posterior con **PDO SQLite** (`pdo_sqlite`) y permisos de

@@ -19,6 +19,15 @@ final class LandingVisitService
 
     public const TIMEZONE = 'America/Caracas';
 
+    private const INITIAL_VIEWS = [
+        'ghhoteles' => [
+            '2026-10-22' => 19,
+            '2026-10-23' => 12,
+            '2026-10-24' => 47,
+        ],
+        'jsantana' => [],
+    ];
+
     private PDO $database;
 
     public function __construct(?string $databasePath = null)
@@ -82,6 +91,8 @@ final class LandingVisitService
     /**
      * @return array{
      *     total: int, today: int, last7: int, last30: int,
+     *     initialViews: array{total: int, today: int, last7: int, last30: int},
+     *     recordedTotal: int,
      *     firstVisit: ?string, lastVisit: ?string,
      *     days: array<string, int>
      * }
@@ -98,6 +109,8 @@ final class LandingVisitService
             'today' => 0,
             'last7' => 0,
             'last30' => 0,
+            'initialViews' => ['total' => 0, 'today' => 0, 'last7' => 0, 'last30' => 0],
+            'recordedTotal' => 0,
             'firstVisit' => null,
             'lastVisit' => null,
             'days' => [],
@@ -131,6 +144,27 @@ final class LandingVisitService
                 $statistics['last30'] += $views;
                 $statistics['days'][$date] = $views;
             }
+        }
+
+        $statistics['recordedTotal'] = $statistics['total'];
+        foreach (self::INITIAL_VIEWS[$landingId] as $date => $views) {
+            if ($date > $todayKey) {
+                continue;
+            }
+            $statistics['initialViews']['total'] += $views;
+            if ($date === $todayKey) {
+                $statistics['initialViews']['today'] += $views;
+            }
+            if ($date >= $weekStart) {
+                $statistics['initialViews']['last7'] += $views;
+            }
+            if ($date >= $monthStart) {
+                $statistics['initialViews']['last30'] += $views;
+                $statistics['days'][$date] += $views;
+            }
+        }
+        foreach ($statistics['initialViews'] as $key => $views) {
+            $statistics[$key] += $views;
         }
 
         return $statistics;

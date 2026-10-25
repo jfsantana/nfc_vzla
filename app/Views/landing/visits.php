@@ -123,17 +123,32 @@ $formatDate = static fn (string $value): string => (new DateTimeImmutable(
     <?php else: ?>
         <dl class="metrics">
             <?php foreach ([
-                ['Visitas totales', 'total', 'Desde el inicio del registro'],
+                ['Visitas totales', 'total', $statistics['initialViews']['total'] > 0 ? 'Registro e historial inicial' : 'Desde el inicio del registro'],
                 ['Hoy', 'today', $now->format('d/m/Y')],
                 ['&Uacute;ltimos 7 d&iacute;as', 'last7', 'Incluye hoy'],
                 ['&Uacute;ltimos 30 d&iacute;as', 'last30', 'Incluye hoy'],
             ] as [$label, $key, $detail]): ?>
                 <div class="metric">
                     <dt><?= $label ?></dt>
-                    <dd><?= $formatNumber($statistics[$key]) ?><small><?= e($detail) ?></small></dd>
+                    <dd>
+                        <?= $formatNumber($statistics[$key]) ?>
+                        <small><?= e($detail) ?></small>
+                        <?php if ($statistics['initialViews'][$key] > 0): ?>
+                            <small>Incluye <?= $formatNumber($statistics['initialViews'][$key]) ?> de ajuste hist&oacute;rico manual</small>
+                        <?php endif; ?>
+                    </dd>
                 </div>
             <?php endforeach; ?>
         </dl>
+
+        <?php if ($statistics['initialViews']['total'] > 0): ?>
+            <section class="panel">
+                <h2>Ajuste hist&oacute;rico manual: <?= $formatNumber($statistics['initialViews']['total']) ?></h2>
+                <p>Estas visitas se distribuyen por fecha como ajuste hist&oacute;rico manual; no corresponden a mediciones autom&aacute;ticas del contador.</p>
+                <p>El ajuste se suma a las visitas registradas de cada fecha. Permanece en el total hist&oacute;rico, pero sale de los indicadores y del desglose de 7 y 30 d&iacute;as cuando esas fechas quedan fuera del per&iacute;odo.</p>
+                <p>Visitas registradas autom&aacute;ticamente desde la instalaci&oacute;n: <strong><?= $formatNumber($statistics['recordedTotal']) ?></strong>.</p>
+            </section>
+        <?php endif; ?>
 
         <?php if ($statistics['total'] === 0): ?>
             <section class="panel empty">
@@ -145,6 +160,9 @@ $formatDate = static fn (string $value): string => (new DateTimeImmutable(
         <section class="panel">
             <h2>Visitas por d&iacute;a</h2>
             <p class="muted">Actividad de los &uacute;ltimos 30 d&iacute;as. Cada recarga de la landing suma una nueva visita.</p>
+            <?php if ($statistics['initialViews']['last30'] > 0): ?>
+                <p class="muted">Incluye <?= $formatNumber($statistics['initialViews']['last30']) ?> visitas de ajuste hist&oacute;rico manual, asignadas a sus fechas.</p>
+            <?php endif; ?>
             <div class="table-wrap">
                 <table>
                     <caption>Del <?= $now->modify('-29 days')->format('d/m/Y') ?> al <?= $now->format('d/m/Y') ?></caption>
@@ -169,7 +187,7 @@ $formatDate = static fn (string $value): string => (new DateTimeImmutable(
             <h2>C&oacute;mo interpretar estas cifras</h2>
             <p>Una visita equivale a una carga de la landing que llega al servidor. Se incluyen recargas, visitas propias y accesos automatizados; no son personas &uacute;nicas ni ventas confirmadas.</p>
             <p>Consultar o actualizar este panel no incrementa el contador. Los datos de cada landing se mantienen separados y no se guardan IP, cookies ni datos personales.</p>
-            <p class="muted">El registro comienza con la instalaci&oacute;n de este contador; no incluye visitas anteriores.</p>
+            <p class="muted">El registro autom&aacute;tico comienza con la instalaci&oacute;n de este contador; no recupera visitas anteriores.</p>
             <?php if ($statistics['firstVisit'] !== null): ?>
                 <p class="muted">Primera visita registrada: <?= e($formatDate($statistics['firstVisit'])) ?>.<br>
                     &Uacute;ltima visita registrada: <?= e($formatDate($statistics['lastVisit'])) ?>.</p>

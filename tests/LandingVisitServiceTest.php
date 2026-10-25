@@ -14,21 +14,27 @@ final class LandingVisitServiceTest extends TestCase
         return new DateTimeImmutable($date, new DateTimeZone(LandingVisitService::TIMEZONE));
     }
 
-    public function testEmptyStatisticsContainThirtyZeroDays(): void
+    public function testHistoricalDistributionContainsExactlySeventyEightViews(): void
     {
         $service = new LandingVisitService(':memory:');
         $stats = $service->getStatistics('ghhoteles', $this->at('2026-10-25 12:00:00'));
 
-        self::assertSame(0, $stats['total']);
+        self::assertSame(78, $stats['total']);
+        self::assertSame(['total' => 78, 'today' => 0, 'last7' => 78, 'last30' => 78], $stats['initialViews']);
+        self::assertSame(0, $stats['recordedTotal']);
         self::assertSame(0, $stats['today']);
-        self::assertSame(0, $stats['last7']);
-        self::assertSame(0, $stats['last30']);
+        self::assertSame(78, $stats['last7']);
+        self::assertSame(78, $stats['last30']);
         self::assertNull($stats['firstVisit']);
         self::assertNull($stats['lastVisit']);
         self::assertCount(30, $stats['days']);
         self::assertSame('2026-09-26', array_key_first($stats['days']));
         self::assertSame('2026-10-25', array_key_last($stats['days']));
-        self::assertSame(0, array_sum($stats['days']));
+        self::assertSame(78, array_sum($stats['days']));
+        self::assertSame(19, $stats['days']['2026-10-22']);
+        self::assertSame(12, $stats['days']['2026-10-23']);
+        self::assertSame(47, $stats['days']['2026-10-24']);
+        self::assertSame(27, count(array_filter($stats['days'], static fn (int $views): bool => $views === 0)));
     }
 
     public function testReloadsCountAndLandingsRemainIsolated(): void
@@ -40,9 +46,16 @@ final class LandingVisitServiceTest extends TestCase
         $service->recordVisit('jsantana', $now);
 
         $hotel = $service->getStatistics('ghhoteles', $now);
-        self::assertSame(2, $hotel['total']);
+        self::assertSame(80, $hotel['total']);
+        self::assertSame(2, $hotel['recordedTotal']);
+        self::assertSame(80, $hotel['last7']);
+        self::assertSame(80, $hotel['last30']);
         self::assertSame(2, $hotel['today']);
-        self::assertSame(1, $service->getStatistics('jsantana', $now)['total']);
+        $personal = $service->getStatistics('jsantana', $now);
+        self::assertSame(['total' => 0, 'today' => 0, 'last7' => 0, 'last30' => 0], $personal['initialViews']);
+        foreach (['total', 'today', 'last7', 'last30', 'recordedTotal'] as $key) {
+            self::assertSame(1, $personal[$key]);
+        }
         self::assertSame($hotel, $service->getStatistics('ghhoteles', $now));
     }
 
@@ -54,12 +67,13 @@ final class LandingVisitServiceTest extends TestCase
         }
         $stats = $service->getStatistics('ghhoteles', $this->at('2026-10-25 13:00:00'));
 
-        self::assertSame(5, $stats['total']);
+        self::assertSame(83, $stats['total']);
+        self::assertSame(5, $stats['recordedTotal']);
         self::assertSame(1, $stats['today']);
-        self::assertSame(2, $stats['last7']);
-        self::assertSame(4, $stats['last30']);
-        self::assertSame(4, array_sum($stats['days']));
-        self::assertSame(0, $stats['days']['2026-10-24']);
+        self::assertSame(80, $stats['last7']);
+        self::assertSame(82, $stats['last30']);
+        self::assertSame(82, array_sum($stats['days']));
+        self::assertSame(47, $stats['days']['2026-10-24']);
         self::assertSame('2026-09-25 12:00:00', $stats['firstVisit']);
         self::assertSame('2026-10-25 12:00:00', $stats['lastVisit']);
     }
@@ -79,6 +93,88 @@ final class LandingVisitServiceTest extends TestCase
         self::assertSame('2027-01-01 00:00:00', $stats['lastVisit']);
     }
 
+    public function testInitialViewsRemainOnlyInTotalAfterBothWindowsExpire(): void
+    {
+        $service = new LandingVisitService(':memory:');
+        $service->recordVisit('ghhoteles', $this->at('2026-10-25 12:00:00'));
+        $stats = $service->getStatistics('ghhoteles', $this->at('2026-11-25 12:00:00'));
+
+        self::assertSame(79, $stats['total']);
+        self::assertSame(1, $stats['recordedTotal']);
+        self::assertSame(['total' => 78, 'today' => 0, 'last7' => 0, 'last30' => 0], $stats['initialViews']);
+        self::assertSame(0, $stats['last7']);
+        self::assertSame(0, $stats['last30']);
+        self::assertSame(0, $stats['today']);
+        self::assertSame(0, array_sum($stats['days']));
+        self::assertSame('2026-10-25 12:00:00', $stats['firstVisit']);
+        self::assertSame('2026-10-25 12:00:00', $stats['lastVisit']);
+    }
+
+    public function testPersonalLandingStillStartsWithZeroVisits(): void
+    {
+        $service = new LandingVisitService(':memory:');
+        $stats = $service->getStatistics('jsantana', $this->at('2026-10-25 12:00:00'));
+
+        foreach (['total', 'today', 'last7', 'last30', 'recordedTotal'] as $key) {
+            self::assertSame(0, $stats[$key]);
+        }
+        self::assertSame(['total' => 0, 'today' => 0, 'last7' => 0, 'last30' => 0], $stats['initialViews']);
+        self::assertSame(0, array_sum($stats['days']));
+    }
+
+    public function testHistoricalDaysExpireIndividuallyFromBothWindows(): void
+    {
+        $service = new LandingVisitService(':memory:');
+        foreach ([
+            ['2026-10-28', 78, 78],
+            ['2026-10-29', 59, 78],
+            ['2026-10-30', 47, 78],
+            ['2026-10-31', 0, 78],
+            ['2026-11-20', 0, 78],
+            ['2026-11-21', 0, 59],
+            ['2026-11-22', 0, 47],
+            ['2026-11-23', 0, 0],
+        ] as [$date, $last7, $last30]) {
+            $stats = $service->getStatistics('ghhoteles', $this->at($date . ' 12:00:00'));
+            self::assertSame(78, $stats['total'], $date);
+            self::assertSame(0, $stats['today'], $date);
+            self::assertSame($last7, $stats['last7'], $date);
+            self::assertSame($last30, $stats['last30'], $date);
+            self::assertSame($last7, $stats['initialViews']['last7'], $date);
+            self::assertSame($last30, $stats['initialViews']['last30'], $date);
+            self::assertSame($last30, array_sum($stats['days']), $date);
+        }
+    }
+
+    public function testHistoricalAdjustmentsDoNotAppearBeforeTheirDates(): void
+    {
+        $service = new LandingVisitService(':memory:');
+        $before = $service->getStatistics('ghhoteles', $this->at('2026-10-21 12:00:00'));
+        self::assertSame(0, $before['total']);
+        self::assertSame(0, array_sum($before['days']));
+
+        $firstDay = $service->getStatistics('ghhoteles', $this->at('2026-10-22 12:00:00'));
+        self::assertSame(19, $firstDay['total']);
+        self::assertSame(19, $firstDay['today']);
+        self::assertSame(19, $firstDay['days']['2026-10-22']);
+    }
+
+    public function testHistoricalAdjustmentAddsToExistingDailyVisitsWithoutReplacingThem(): void
+    {
+        $service = new LandingVisitService(':memory:');
+        $service->recordVisit('ghhoteles', $this->at('2026-10-24 12:00:00'));
+        $service->recordVisit('ghhoteles', $this->at('2026-10-25 12:00:00'));
+        $now = $this->at('2026-10-25 13:00:00');
+        $stats = $service->getStatistics('ghhoteles', $now);
+
+        self::assertSame(80, $stats['total']);
+        self::assertSame(2, $stats['recordedTotal']);
+        self::assertSame(1, $stats['today']);
+        self::assertSame(48, $stats['days']['2026-10-24']);
+        self::assertSame(80, array_sum($stats['days']));
+        self::assertSame($stats, $service->getStatistics('ghhoteles', $now));
+    }
+
     public function testOutOfOrderWritesPreserveFirstAndLastVisit(): void
     {
         $service = new LandingVisitService(':memory:');
@@ -87,7 +183,8 @@ final class LandingVisitServiceTest extends TestCase
         }
         $stats = $service->getStatistics('ghhoteles', $this->at('2026-10-25 14:00:00'));
 
-        self::assertSame(3, $stats['total']);
+        self::assertSame(81, $stats['total']);
+        self::assertSame(3, $stats['recordedTotal']);
         self::assertSame('2026-10-25 11:00:00', $stats['firstVisit']);
         self::assertSame('2026-10-25 13:00:00', $stats['lastVisit']);
     }
@@ -102,9 +199,14 @@ final class LandingVisitServiceTest extends TestCase
             $writer->recordVisit('ghhoteles', $now);
             unset($writer);
             $reader = new LandingVisitService($path);
-            self::assertSame(1, $reader->getStatistics('ghhoteles', $now)['total']);
+            $stats = $reader->getStatistics('ghhoteles', $now);
+            self::assertSame(79, $stats['total']);
+            self::assertSame(1, $stats['recordedTotal']);
+            self::assertSame($stats, $reader->getStatistics('ghhoteles', $now));
+            $database = new PDO('sqlite:' . $path);
+            self::assertSame(1, (int) $database->query('SELECT SUM(views) FROM landing_visit_daily')->fetchColumn());
         } finally {
-            unset($reader, $writer);
+            unset($database, $reader, $writer);
             unlink($path);
         }
     }
@@ -145,7 +247,10 @@ final class LandingVisitServiceTest extends TestCase
 
             $reader = new LandingVisitService($path);
             $now = $this->at('2026-10-25 12:00:00');
-            self::assertSame(100, $reader->getStatistics('ghhoteles', $now)['total']);
+            $stats = $reader->getStatistics('ghhoteles', $now);
+            self::assertSame(178, $stats['total']);
+            self::assertSame(100, $stats['recordedTotal']);
+            self::assertSame(100, $stats['today']);
             self::assertSame(0, $reader->getStatistics('jsantana', $now)['total']);
         } finally {
             foreach ($workers as [$process, $stdout, $stderr]) {
