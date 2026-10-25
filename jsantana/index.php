@@ -1,3 +1,7 @@
+<?php
+require_once dirname(__DIR__) . '/app/Services/LandingVisitService.php';
+\App\Services\LandingVisitService::recordRequest('jsantana');
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>

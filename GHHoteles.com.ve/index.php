@@ -5,6 +5,9 @@
  * "¡Nuestra estrella eres tú!"
  */
 
+require_once dirname(__DIR__) . '/app/Services/LandingVisitService.php';
+\App\Services\LandingVisitService::recordRequest('ghhoteles');
+
 // Configuración general y enlaces
 $company = [
     'name' => 'GH Hoteles',

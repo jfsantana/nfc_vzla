@@ -13,6 +13,9 @@ composer.phar
 /storage/logs/*.log
 /storage/cache/*
 /storage/uploads/*
+/storage/analytics/*
+!/storage/analytics/.htaccess
+!/storage/analytics/README.md
 !/storage/logs/.gitkeep
 !/storage/cache/.gitkeep
 !/storage/uploads/.gitkeep
@@ -35,3 +38,4 @@ app/Config/Database.php.htaccess
 app/Config/Database.php
 public/.htaccess
 .htaccess
+!/storage/analytics/.htaccess
